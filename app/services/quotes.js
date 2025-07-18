@@ -100,6 +100,20 @@ const updateQuoteStatus = async (id, status, userId) => {
     return updatedQuote;
 };
 
+const accreditPayment = async (id, filePath) => {
+  const quote = await Quote.findById(id);
+  if (!quote) {
+    throw new Error('Cotización no encontrada.');
+  }
+
+  // Actualizamos los campos necesarios
+  quote.status = 'accredited';
+  quote.paymentProofUrl = filePath; // Guardamos la ruta del archivo
+
+  await quote.save();
+  return quote;
+};
+
 const getAllQuotes = () => Quote.find().sort({ createdAt: -1 }).populate('createdBy', 'name email');
 const getQuoteById = (id) => Quote.findById(id).populate('createdBy', 'name email');
 
@@ -108,5 +122,6 @@ module.exports = {
     updateAndRecalculateQuote,
     updateQuoteStatus,
     getAllQuotes,
-    getQuoteById
+    getQuoteById,
+    accreditPayment
 };

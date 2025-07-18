@@ -30,8 +30,12 @@ const QuoteScheme = new mongoose.Schema({
     // --- Flujo de Estado ---
     status: {
         type: String,
-        enum: ['lead', 'pending', 'approved', 'rejected'],
+        enum: ['lead', 'pending', 'approved', 'rejected','accredited'],
         default: 'lead'
+    },
+    paymentProofUrl: {
+        type: String,
+        default: ''
     },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users' }
 }, {
