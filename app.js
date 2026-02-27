@@ -14,6 +14,6 @@ app.use('/api/1.0', require('./app/routes'));
 // Conectar a la base de datos
 dbConnect();
 
-app.listen(PORT, () => {
-    console.log('API lista por el puerto ', PORT);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 API lista por el puerto ${PORT}`);
 });
