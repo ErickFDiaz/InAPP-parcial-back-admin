@@ -69,9 +69,6 @@ const updateItem = async (req, res) => {
     }
 };
 
-/**
- * Delete a user by ID
- */
 const deleteItem = async (req, res) => {
     try {
         const { id } = req.params;
@@ -88,10 +85,25 @@ const deleteItem = async (req, res) => {
     }
 };
 
+/**
+ * Get users with their courses (Maestro-Detalle)
+ */
+const getUsersWithCursos = async (req, res) => {
+    try {
+        const users = await userService.getUsersWithCursos();
+        const response = responseHandler.success('Users and courses retrieved successfully', users);
+        responseHandler.send(res, response);
+    } catch (e) {
+        const response = responseHandler.internalServerError(e.message);
+        responseHandler.send(res, response);
+    }
+}
+
 module.exports = {
     getItem,
     getItems,
     createItem,
     updateItem,
     deleteItem,
+    getUsersWithCursos
 };

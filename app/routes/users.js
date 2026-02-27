@@ -3,7 +3,7 @@ const router = express.Router()
 // const checkOrigin = require('../middleware/origin')
 // const checkAuth = require('../middleware/auth')
 const checkRoleAuth = require('../middleware/roleAuth')
-const { getItems, getItem, deleteItem, updateItem } = require('../controllers/users')
+const { getItems, createItem, getItem, deleteItem, updateItem, getUsersWithCursos } = require('../controllers/users')
 //const { validateCreateUser } = require('../validators/users')
 
 // //TODO: Turbo 🐱‍🏍  cache!
@@ -14,16 +14,19 @@ const { getItems, getItem, deleteItem, updateItem } = require('../controllers/us
 //     getItems
 // )
 
-router.get('/', checkRoleAuth(['admin']), getItems)
+router.get('/', getItems)
 
-router.get('/:id', checkRoleAuth(['admin']), getItem)
+// Nueva ruta Maestro-Detalle (Debe ir antes de /:id)
+router.get('/maestro-detalle', getUsersWithCursos)
+
+router.get('/:id', getItem)
 
 //TODO: Donde recibimos data
-// router.post('/', checkOrigin, validateCreateUser, createItem)
+router.post('/', createItem)
 
-router.patch('/:id', checkRoleAuth(['admin']), updateItem)
+router.patch('/:id', updateItem)
 
-router.delete('/:id', checkRoleAuth(['admin']), deleteItem)
+router.delete('/:id', deleteItem)
 
 
 module.exports = router
