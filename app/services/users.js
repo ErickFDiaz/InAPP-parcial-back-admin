@@ -50,41 +50,11 @@ const getUserByEmail = async (email) => {
     }
 };
 
-const getUsersWithCursos = async () => {
-    try {
-        return await userModel.aggregate([
-            {
-                $lookup: {
-                    from: 'cursos',        // name of the target collection
-                    localField: '_id',     // field from the input document
-                    foreignField: 'instructor', // field from the documents of the "from" collection
-                    as: 'cursos'           // output array field
-                }
-            },
-            {
-                $project: {
-                    // At least 3 fields from Users
-                    name: 1,
-                    email: 1,
-                    role: 1,
-                    // At least 3 fields from Cursos
-                    'cursos.titulo': 1,
-                    'cursos.categoria': 1,
-                    'cursos.precio': 1
-                }
-            }
-        ]);
-    } catch (error) {
-        throw new Error('Error retrieving users with courses: ' + error.message);
-    }
-};
-
 module.exports = {
     createUser,
     getAllUsers,
     getUserById,
     updateUserById,
     deleteUserById,
-    getUserByEmail,
-    getUsersWithCursos
+    getUserByEmail
 };

@@ -12,6 +12,16 @@ const getCursoById = (id) => {
     return Curso.findById(id).populate('instructor', 'name email');
 };
 
+const getCursosByInstructor = (instructorId, sortOrder) => {
+    let sortQuery = { createdAt: -1 }; // default descending by creation date
+    if (sortOrder === 'asc') sortQuery = { titulo: 1 };
+    if (sortOrder === 'desc') sortQuery = { titulo: -1 };
+
+    return Curso.find({ instructor: instructorId })
+        .sort(sortQuery)
+        .select('titulo categoria precio');
+};
+
 const createCurso = async (cursoData) => {
     const newCurso = new Curso(cursoData);
     await newCurso.save();
@@ -70,6 +80,7 @@ const deleteLeccion = async (cursoId, leccionId) => {
 module.exports = {
     getAllCursos,
     getCursoById,
+    getCursosByInstructor,
     createCurso,
     updateCurso,
     deleteCurso,

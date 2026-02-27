@@ -1,4 +1,5 @@
 const userService = require('../services/users');
+const cursoService = require('../services/cursos');
 const responseHandler = require('../helpers/handleResponse');
 
 /**
@@ -86,12 +87,15 @@ const deleteItem = async (req, res) => {
 };
 
 /**
- * Get users with their courses (Maestro-Detalle)
+ * Get courses for a specific user instructor (Detalle)
  */
-const getUsersWithCursos = async (req, res) => {
+const getUsuarioCursos = async (req, res) => {
     try {
-        const users = await userService.getUsersWithCursos();
-        const response = responseHandler.success('Users and courses retrieved successfully', users);
+        const { id } = req.params;
+        const { sort } = req.query; // asc, desc
+        // Optional: you can verify if the user exists first if desired.
+        const cursos = await cursoService.getCursosByInstructor(id, sort);
+        const response = responseHandler.success(`Cursos for user ${id} retrieved successfully`, cursos);
         responseHandler.send(res, response);
     } catch (e) {
         const response = responseHandler.internalServerError(e.message);
@@ -105,5 +109,5 @@ module.exports = {
     createItem,
     updateItem,
     deleteItem,
-    getUsersWithCursos
+    getUsuarioCursos
 };
